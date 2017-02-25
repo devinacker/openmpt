@@ -91,6 +91,7 @@ static const ModFormatInfo modFormatInfo[] =
 	{ MOD_TYPE_SFX,		"SoundFX",					"sfx2" },
 	{ MOD_TYPE_SFX,		"MultiMedia Sound",			"mms" },
 	{ MOD_TYPE_STP,		"Soundtracker Pro II",		"stp" },
+	{ MOD_TYPE_SYMMOD,  "Symphonie Pro",            "symmod" },
 
 #ifndef NO_ARCHIVE_SUPPORT
 	// Compressed modules
@@ -155,6 +156,7 @@ static const ModCharsetInfo ModCharsetInfos[] =
 	{ MOD_TYPE_DIGI, mpt::CharsetISO8859_1  },
 	{ MOD_TYPE_SFX , mpt::CharsetISO8859_1  },
 	{ MOD_TYPE_STP,  mpt::CharsetISO8859_1  },
+	{ MOD_TYPE_SYMMOD, mpt::CharsetISO8859_1 },
 	// Amiga // DOS
 	{ MOD_TYPE_MOD , mpt::CharsetISO8859_1  },
 	{ MOD_TYPE_MED , mpt::CharsetISO8859_1  },

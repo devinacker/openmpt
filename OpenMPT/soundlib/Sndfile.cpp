@@ -310,6 +310,7 @@ bool CSoundFile::Create(FileReader file, ModLoadingFlags loadFlags)
 			 && !ReadPT36(file, loadFlags)
 			 && !ReadSFX(file, loadFlags)
 			 && !ReadSTP(file, loadFlags)
+			 && !ReadSymMOD(file, loadFlags)
 			 && !ReadMod(file, loadFlags)
 			 && !ReadICE(file, loadFlags)
 			 && !Read669(file, loadFlags)
@@ -1127,6 +1128,7 @@ MODTYPE CSoundFile::GetBestSaveFormat() const
 	case MOD_TYPE_MT2:
 	case MOD_TYPE_MDL:
 	case MOD_TYPE_PTM:
+	case MOD_TYPE_SYMMOD:
 	default:
 		return MOD_TYPE_IT;
 	case MOD_TYPE_MID:

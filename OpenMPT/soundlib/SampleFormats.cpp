@@ -2474,6 +2474,7 @@ struct IFFChunk
 		idVHDR	= MAGIC4BE('V','H','D','R'),
 		idBODY	= MAGIC4BE('B','O','D','Y'),
 		idNAME	= MAGIC4BE('N','A','M','E'),
+		idCHAN  = MAGIC4BE('C','H','A','N'),
 	};
 
 	typedef ChunkIdentifiers id_type;
@@ -2529,6 +2530,7 @@ bool CSoundFile::ReadIFFSample(SAMPLEINDEX nSample, FileReader &file)
 
 	FileReader vhdrChunk = chunks.GetChunk(IFFChunk::idVHDR);
 	FileReader bodyChunk = chunks.GetChunk(IFFChunk::idBODY);
+	FileReader chanChunk = chunks.GetChunk(IFFChunk::idCHAN);
 	IFFSampleHeader sampleHeader;
 	if(!bodyChunk.IsValid()
 		|| !vhdrChunk.IsValid()
@@ -2540,6 +2542,7 @@ bool CSoundFile::ReadIFFSample(SAMPLEINDEX nSample, FileReader &file)
 	DestroySampleThreadsafe(nSample);
 	// Default values
 	const uint8 bytesPerSample = memcmp(fileHeader.magic, "8SVX", 4) ? 2 : 1;
+	const uint8 channels = chanChunk.ReadUint32BE() == 6 ? 2 : 1;
 	ModSample &sample = Samples[nSample];
 	sample.Initialize();
 	sample.nLoopStart = sampleHeader.oneShotHiSamples / bytesPerSample;
@@ -2560,13 +2563,13 @@ bool CSoundFile::ReadIFFSample(SAMPLEINDEX nSample, FileReader &file)
 		strcpy(m_szNames[nSample], "");
 	}
 
-	sample.nLength = mpt::saturate_cast<SmpLength>(bodyChunk.GetLength() / bytesPerSample);
+	sample.nLength = mpt::saturate_cast<SmpLength>(bodyChunk.GetLength() / (bytesPerSample * channels));
 	if((sample.nLoopStart + 4 < sample.nLoopEnd) && (sample.nLoopEnd <= sample.nLength)) sample.uFlags.set(CHN_LOOP);
 
 	// While this is an Amiga format, the 16SV version appears to be only used on PC, and only with little-endian sample data.
 	SampleIO(
 		(bytesPerSample == 2) ? SampleIO::_16bit : SampleIO::_8bit,
-		SampleIO::mono,
+		(channels == 2) ? SampleIO::stereoSplit : SampleIO::mono,
 		SampleIO::littleEndian,
 		SampleIO::signedPCM)
 		.ReadSample(sample, bodyChunk);

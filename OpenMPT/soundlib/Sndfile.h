@@ -681,6 +681,7 @@ public:
 	bool ReadSFX(FileReader &file, ModLoadingFlags loadFlags = loadCompleteModule);
 	bool ReadSTM(FileReader &file, ModLoadingFlags loadFlags = loadCompleteModule);
 	bool ReadSTP(FileReader &file, ModLoadingFlags loadFlags = loadCompleteModule);
+	bool ReadSymMOD(FileReader &file, ModLoadingFlags loadFlags = loadCompleteModule);
 	bool ReadUlt(FileReader &file, ModLoadingFlags loadFlags = loadCompleteModule);
 	bool ReadUMX(FileReader &file, ModLoadingFlags loadFlags = loadCompleteModule);
 	bool ReadWav(FileReader &file, ModLoadingFlags loadFlags = loadCompleteModule);
